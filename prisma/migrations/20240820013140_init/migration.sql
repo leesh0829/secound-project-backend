@@ -1,0 +1,30 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[db_user] (
+    [id] VARCHAR(255) NOT NULL,
+    [password] VARCHAR(255) NOT NULL,
+    CONSTRAINT [user_pk] PRIMARY KEY CLUSTERED ([id])
+);
+
+-- CreateTable
+CREATE TABLE [dbo].[test] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [name] NVARCHAR(100) NOT NULL,
+    CONSTRAINT [test_pk] PRIMARY KEY CLUSTERED ([id])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

@@ -1,15 +1,22 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Search } from '@nestjs/common';
 import { TestService } from './test.service';
-import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
 
 @Controller('test')
 export class TestController {
   constructor(private readonly testService: TestService) {}
 
-  @Post()
+  @Post('login')
   async create(@Body() userData : {id : string, password : string}) {
     const data = await this.testService.create(userData);
+    return data
+  }
+
+
+  @Post('sign-up')
+  async signUp(@Body() userData : {id : string, password : string}) {
+    const data = await this.testService.signup(userData);
+    return data
   }
 
   @Get()
