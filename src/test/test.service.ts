@@ -1,8 +1,5 @@
-import { PageStaticInfo } from './../../node_modules/next/dist/build/analysis/get-page-static-info.d';
 import { Body, Injectable } from '@nestjs/common';
-import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
-import { PrismaClient } from '@prisma/client';
 import prisma from 'component/prisma';
 import { NextResponse } from 'next/server';
 

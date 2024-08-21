@@ -4,6 +4,8 @@ import { join } from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { TestModule } from './test/test.module';
+import { AppController } from './app.controller';
+import { TimeModule } from './time/time.module';
 
 @Module({
   imports: [
@@ -12,7 +14,8 @@ import { TestModule } from './test/test.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'frontend', 'build'),
-    }), PrismaModule, TestModule,
+    })
+    , PrismaModule, TestModule, TimeModule,
   ],
   controllers: [],
   providers: [],

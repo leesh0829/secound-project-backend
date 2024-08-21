@@ -13,6 +13,7 @@ model db_user {
 }
 
 model test {
-  id   Int    @id(map: "test_pk") @default(autoincrement())
-  name String @db.NVarChar(100)
+  id    Int       @id(map: "test_pk") @default(autoincrement())
+  name  String    @db.NVarChar(100)
+  clock DateTime? @db.DateTime2
 }
