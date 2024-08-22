@@ -29,6 +29,7 @@
     "@nestjs/serve-static": "^4.0.2",
     "@prisma/client": "^5.18.0",
     "@types/next": "^9.0.0",
+    "js-joda": "^1.11.0",
     "moment-timezone": "^0.5.45",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"

@@ -6,7 +6,7 @@ export class TimeController {
   constructor(private readonly timeService: TimeService) {}
   
   @Post()
-  async create(@Body() clock : {time : Date}) {
+  async create(@Body() clock : {time : Date, }) {
     const data = await this.timeService.create(clock);
     return data
   }

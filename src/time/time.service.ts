@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -11,8 +11,8 @@ export class TimeService {
     try {
       const timedata = await prisma.test.create({
         data: {
-          clock : clock.time,
-          name : ''
+          clock : new Date(clock.time),
+          name : '',
         },
       });
       console.log(timedata)
