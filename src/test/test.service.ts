@@ -13,7 +13,6 @@ export class TestService {
           id : userData.id,
         },
       });
-      console.log(data)
       if(data) {
         if (userData.password === data?.password)
         {

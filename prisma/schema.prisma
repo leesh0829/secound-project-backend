@@ -16,4 +16,5 @@ model test {
   id      Int       @id(map: "test_pk") @default(autoincrement())
   content String    @db.NVarChar(255)
   clock   DateTime?
+  month   Int?
 }
