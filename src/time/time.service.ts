@@ -23,12 +23,8 @@ export class TimeService {
   }
 
 
-  async get(list : {time : Date, month : number}) {
-    try {
-      const listData = await prisma.test.findMany()
-      console.log(listData)
-    } catch(err) {
-      console.error(err)
-    }
+  async get(list : {id : number}) {
+    var Data = await prisma.test.findFirst()
+    //console.log(Data)
   }
 }
