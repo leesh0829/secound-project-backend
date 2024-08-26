@@ -10,14 +10,11 @@ datasource db {
 model db_user {
   id       String @id(map: "user_pk") @db.VarChar(255)
   password String @db.VarChar(255)
-  test     test[]
 }
 
 model test {
-  number  Int       @id(map: "test_pk") @default(autoincrement())
+  id      Int       @id(map: "test_pk") @default(autoincrement())
   clock   DateTime?
   content String    @db.NVarChar(255)
   month   Int?
-  id      String?   @db.VarChar(255)
-  db_user db_user?  @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "test_db_user_FK")
 }
