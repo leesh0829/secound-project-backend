@@ -30,6 +30,12 @@ export class TimeController {
     return data;
   }
 
+  @Post('order')
+  async order(@Body() list : {month : number, filterState : string}) {
+    const data = await this.timeService.order(list);
+    return data;
+  }
+
   @Get()
   async get() {
     const data = await this.timeService.get();
