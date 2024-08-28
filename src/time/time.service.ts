@@ -40,7 +40,6 @@ export class TimeService {
     }
   }
 
-
   async get() {
     const data = await prisma.test.findMany({
       select: {
@@ -50,27 +49,10 @@ export class TimeService {
         month: false,
       }
     })
-    //console.log(data)
     return data
   }
 
-  async filter(list : {time : Date, month : number, filterState : string}) {
-    if(list.filterState === 'month') {
-      const data = await prisma.test.findMany({
-        where: {
-          month : list.month,
-        },
-        select: {
-          id: true, //false
-          clock: false,
-          content: false, //true
-          month: false,
-        }
-      })
-      return data
-    }
-  }
-
+  
   async update(list : {id : number, content : string}) {
     await prisma.test.update({
       where: {
@@ -81,37 +63,72 @@ export class TimeService {
       }
     })
   }
-
+  
   async delete(list : {id : number}) {
-    await prisma.test.delete({ //삭제할 때 프론트엔드에서는 인덱스가 정렬되는데 벡엔드는 되지 않아 2개 부터 오류남, 그래서 이 delete문 전에 id를 정렬하는게 필요
+    await prisma.test.delete({
       where: {
         id: list.id,
       },
     })
+
+    const data = await prisma.test.findMany({
+      select: {
+        id: true,
+        clock: false,
+        content: false,
+        month: false,
+      }
+    })
+    
+    for(let i = list.id + 1; i<data.length + 2; i++) {
+      await prisma.test.update({
+        where: {
+          id: i,
+        },
+        data: {
+          id: i - 1,
+        }
+      })
+    }    
   }
 
-  async order(list : {month : number, filterState : string}) {
-    if(list.filterState === 'asc') {
-      const ascOrders = await prisma.test.findMany({
+  async filter(list : {month : number, checkState : string}) {
+    if(list.checkState === "ACTIVE") { //ACTIVE
+      const Data = await prisma.test.findMany({
         where: {
           month : list.month,
+          check : 0
         },
         orderBy: {
-          clock: 'asc'
+          clock: 'desc'
         },
         select: {
-          id: false,
+          id: true,
           clock: false,
-          content: true,
+          content: false,
           month: false,
         },
       })
-      //console.log(ascOrders)
-      return ascOrders
-    }
-
-    if(list.filterState === 'desc') { //내림차순 하고 수정하면 인덱스가 바뀌지 않아 이상한게 수정됨 그래서 id를 바꿔서 그냥 출력하던지를 해야함
-      const descOrders = await prisma.test.findMany({
+      return Data
+    } else if(list.checkState === "COMPLETE") { //COMPLETE
+      const Data = await prisma.test.findMany({
+        where: {
+          month : list.month,
+          check : 1
+        },
+        orderBy: {
+          clock: 'desc'
+        },
+        select: {
+          id: true,
+          clock: false,
+          content: false,
+          month: false,
+        },
+      })
+      return Data
+    } else { //ALL
+      const Data = await prisma.test.findMany({
         where: {
           month : list.month,
         },
@@ -119,14 +136,13 @@ export class TimeService {
           clock: 'desc'
         },
         select: {
-          id: false,
+          id: true,
           clock: false,
-          content: true,
+          content: false,
           month: false,
         },
       })
-      //console.log(descOrders)
-      return descOrders
+      return Data
     }
   }
 }

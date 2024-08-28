@@ -13,7 +13,7 @@ export class TimeController {
   }
 
   @Post('filter')
-  async filter(@Body() list : {time : Date, month : number, filterState : string}) {
+  async filter(@Body() list : {month : number, checkState : string}) {
     const data = await this.timeService.filter(list);
     return data;
   }
@@ -27,12 +27,6 @@ export class TimeController {
   @Post('delete')
   async delete(@Body() list : {id : number}) {
     const data = await this.timeService.delete(list);
-    return data;
-  }
-
-  @Post('order')
-  async order(@Body() list : {month : number, filterState : string}) {
-    const data = await this.timeService.order(list);
     return data;
   }
 
