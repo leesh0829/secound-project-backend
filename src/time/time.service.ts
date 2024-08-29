@@ -22,15 +22,17 @@ export class TimeService {
             clock : new Date(clock.time),
             month : clock.month,
             content : clock.content,
+            check : 0,
           },
         });
 
         const data = await prisma.test.findMany({
           select: {
-            id: false,
-            clock: false,
+            id: true,
+            clock: true,
             content: true,
-            month: false,
+            month: true,
+            check : true
           }
         })
         return data
@@ -40,26 +42,31 @@ export class TimeService {
     }
   }
 
-  async get() {
+  async get(sort : string) {
     const data = await prisma.test.findMany({
       select: {
-        id: false,
-        clock: false,
+        id: true,
+        clock: true,
         content: true,
-        month: false,
+        month: true,
+        check : true
+      },
+      orderBy : {
+        clock : sort === 'desc' ? 'desc' : 'asc',
       }
     })
     return data
   }
 
   
-  async update(list : {id : number, content : string}) {
-    await prisma.test.update({
+  async update(list : {id : number, content : string, check : number}) {
+    await prisma.test.updateMany({
       where: {
         id: list.id,
       },
       data: {
-        content: list.content
+        content: list.content,
+        check: list.check,
       }
     })
   }
@@ -90,59 +97,5 @@ export class TimeService {
         }
       })
     }    
-  }
-
-  async filter(list : {month : number, checkState : string}) {
-    if(list.checkState === "ACTIVE") { //ACTIVE
-      const Data = await prisma.test.findMany({
-        where: {
-          month : list.month,
-          check : 0
-        },
-        orderBy: {
-          clock: 'desc'
-        },
-        select: {
-          id: true,
-          clock: false,
-          content: false,
-          month: false,
-        },
-      })
-      return Data
-    } else if(list.checkState === "COMPLETE") { //COMPLETE
-      const Data = await prisma.test.findMany({
-        where: {
-          month : list.month,
-          check : 1
-        },
-        orderBy: {
-          clock: 'desc'
-        },
-        select: {
-          id: true,
-          clock: false,
-          content: false,
-          month: false,
-        },
-      })
-      return Data
-    } else { //ALL
-      const Data = await prisma.test.findMany({
-        where: {
-          month : list.month,
-        },
-        orderBy: {
-          clock: 'desc'
-        },
-        select: {
-          id: true,
-          clock: false,
-          content: false,
-          month: false,
-        },
-      })
-      return Data
-    }
   }
 }
